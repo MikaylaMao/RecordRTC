@@ -3067,6 +3067,37 @@ function StereoAudioRecorder(mediaStream, config) {
         };
     }
 
+    function resetVariables(stopRecording) {
+        leftchannel = [];
+        rightchannel = [];
+        recordingLength = 0;
+        if (stopRecording === undefined) {
+            console.log('stopRecording all');
+            isAudioProcessStarted = false;
+            recording = false;
+            isPaused = false;
+            context = null;
+        }
+
+        self.leftchannel = leftchannel;
+        self.rightchannel = rightchannel;
+        self.numberOfAudioChannels = numberOfAudioChannels;
+        self.desiredSampRate = desiredSampRate;
+        self.sampleRate = sampleRate;
+        self.recordingLength = recordingLength;
+
+        intervalsBasedBuffers = {
+            left: [],
+            right: [],
+            recordingLength: 0
+        };
+    }
+
+    this.freeMemory = function() {
+        console.log('freeing memory')
+        resetVariables(false);
+    }
+
     function clearRecordedDataCB() {
         if (jsAudioNode) {
             jsAudioNode.onaudioprocess = null;
